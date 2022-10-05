@@ -190,8 +190,13 @@ struct strbuf;
 #define _SGI_SOURCE 1
 
 #if defined(__GNUC__)
-#define UNUSED __attribute__((unused)) \
+/* The `deprecated` attribute only accepts a message starting in gcc 4.5.0. */
+# if (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__) >= 40500
+#  define UNUSED __attribute__((unused)) \
 	__attribute__((deprecated ("parameter declared as UNUSED")))
+# else
+#  define UNUSED __attribute__((unused))
+# endif
 #else
 #define UNUSED
 #endif
